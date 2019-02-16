@@ -25,17 +25,17 @@
 
                 <TextView
                     android:id="@+id/topheadelines"
-                    android:textColor="@color/colorTextTitle"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:textStyle="bold"
-                    android:text="Top Headlines"
-                    android:fontFamily="sans-serif-light"
-                    android:textSize="17sp"
                     android:layout_marginLeft="16dp"
                     android:layout_marginRight="16dp"
                     android:layout_marginTop="10dp"
-                    android:visibility="invisible"/>
+                    android:fontFamily="sans-serif-light"
+                    android:text="Top Headlines"
+                    android:textColor="@color/colorTextTitle"
+                    android:textSize="17sp"
+                    android:textStyle="bold"
+                    android:visibility="invisible" />
 
                 <android.support.v7.widget.RecyclerView
                     android:id="@+id/recyclerView"
@@ -50,5 +50,7 @@
         </android.support.v4.widget.NestedScrollView>
 
     </android.support.v4.widget.SwipeRefreshLayout>
+
+    <include layout="@layout/error" />
 
 </android.support.design.widget.CoordinatorLayout>
