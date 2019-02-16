@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.support.v4.app.ActivityOptionsCompat;
+import android.support.v4.util.Pair;
 import android.support.v4.view.ViewCompat;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
@@ -116,6 +117,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         adapter.setOnItemClickListener(new Adapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
+                ImageView imageView = view.findViewById(R.id.img);
                 Intent intent = new Intent(MainActivity.this, NewsDetailsActivity.class);
 
                 Article article = articles.get(position);
@@ -126,7 +128,17 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                 intent.putExtra("source", article.getSource().getName());
                 intent.putExtra("author", article.getAuthor());
 
-                startActivity(intent);
+                Pair<View, String> pair = Pair.create((View)imageView, ViewCompat.getTransitionName(imageView));
+                ActivityOptionsCompat optionsCompat = ActivityOptionsCompat.makeSceneTransitionAnimation(
+                        MainActivity.this,
+                        pair
+                );
+
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
+                    startActivity(intent, optionsCompat.toBundle());
+                }else {
+                    startActivity(intent);
+                }
             }
         });
     }
