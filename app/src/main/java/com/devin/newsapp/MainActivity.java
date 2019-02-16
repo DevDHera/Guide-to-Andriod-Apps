@@ -122,7 +122,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                             errorCode = "500 Server Error";
                             break;
                         default:
-                            errorCode = "unknown error_views";
+                            errorCode = "Unknown Error";
                             break;
                     }
 
