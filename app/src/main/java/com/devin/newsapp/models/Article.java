@@ -3,9 +3,7 @@ package com.devin.newsapp.models;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
-import javax.xml.transform.Source;
-
-class Article {
+public class Article {
 
     @SerializedName("source")
     @Expose
@@ -17,23 +15,23 @@ class Article {
 
     @SerializedName("title")
     @Expose
-    private Source title;
+    private String title;
 
     @SerializedName("description")
     @Expose
-    private Source description;
+    private String description;
 
     @SerializedName("url")
     @Expose
-    private Source url;
+    private String url;
 
     @SerializedName("urlToImage")
     @Expose
-    private Source urlToImage;
+    private String urlToImage;
 
     @SerializedName("publishedAt")
     @Expose
-    private Source publishedAt;
+    private String publishedAt;
 
     public Source getSource() {
         return source;
@@ -51,43 +49,43 @@ class Article {
         this.author = author;
     }
 
-    public Source getTitle() {
+    public String getTitle() {
         return title;
     }
 
-    public void setTitle(Source title) {
+    public void setTitle(String title) {
         this.title = title;
     }
 
-    public Source getDescription() {
+    public String getDescription() {
         return description;
     }
 
-    public void setDescription(Source description) {
+    public void setDescription(String description) {
         this.description = description;
     }
 
-    public Source getUrl() {
+    public String getUrl() {
         return url;
     }
 
-    public void setUrl(Source url) {
+    public void setUrl(String url) {
         this.url = url;
     }
 
-    public Source getUrlToImage() {
+    public String getUrlToImage() {
         return urlToImage;
     }
 
-    public void setUrlToImage(Source urlToImage) {
+    public void setUrlToImage(String urlToImage) {
         this.urlToImage = urlToImage;
     }
 
-    public Source getPublishedAt() {
+    public String getPublishedAt() {
         return publishedAt;
     }
 
-    public void setPublishedAt(Source publishedAt) {
+    public void setPublishedAt(String publishedAt) {
         this.publishedAt = publishedAt;
     }
 }
