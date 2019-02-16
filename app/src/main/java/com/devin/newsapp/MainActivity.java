@@ -2,6 +2,7 @@ package com.devin.newsapp;
 
 import android.app.SearchManager;
 import android.content.Context;
+import android.support.v4.widget.SwipeRefreshLayout;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -11,6 +12,8 @@ import android.support.v7.widget.SearchView;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.devin.newsapp.api.ApiClient;
@@ -25,7 +28,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements SwipeRefreshLayout.OnRefreshListener {
 
     public static final String API_KEY = "API_KEY";
     private RecyclerView recyclerView;
@@ -33,22 +36,31 @@ public class MainActivity extends AppCompatActivity {
     private List<Article> articles = new ArrayList<>();
     private Adapter adapter;
     private String TAG = MainActivity.class.getSimpleName();
+    private TextView topHeadline;
+    private SwipeRefreshLayout swipeRefreshLayout;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        swipeRefreshLayout = findViewById(R.id.swipe_refresh_layout);
+        swipeRefreshLayout.setOnRefreshListener(this);
+        swipeRefreshLayout.setColorSchemeResources(R.color.colorAccent);
+
+        topHeadline = findViewById(R.id.topheadelines);
         recyclerView = findViewById(R.id.recyclerView);
         layoutManager = new LinearLayoutManager(MainActivity.this);
         recyclerView.setLayoutManager(layoutManager);
         recyclerView.setItemAnimator(new DefaultItemAnimator());
         recyclerView.setNestedScrollingEnabled(false);
 
-        LoadJson("");
+        onLoadingSwipeRefresh("");
     }
 
-    public void LoadJson(final String keyword){
+    public void LoadJson(final String keyword) {
+        swipeRefreshLayout.setRefreshing(true);
+
         ApiInterface apiInterface = ApiClient.getApiClient().create(ApiInterface.class);
 
         String country = Utils.getCountry();
@@ -56,17 +68,17 @@ public class MainActivity extends AppCompatActivity {
 
         Call<News> call;
 
-        if(keyword.length() > 0) {
+        if (keyword.length() > 0) {
             call = apiInterface.getNewsSearch(keyword, language, "publishedAt", API_KEY);
-        }else {
+        } else {
             call = apiInterface.getNews(country, API_KEY);
         }
 
         call.enqueue(new Callback<News>() {
             @Override
             public void onResponse(Call<News> call, Response<News> response) {
-                if (response.isSuccessful() && response.body().getArticle() != null){
-                    if (!articles.isEmpty()){
+                if (response.isSuccessful() && response.body().getArticle() != null) {
+                    if (!articles.isEmpty()) {
                         articles.clear();
                     }
 
@@ -75,14 +87,20 @@ public class MainActivity extends AppCompatActivity {
                     recyclerView.setAdapter(adapter);
                     adapter.notifyDataSetChanged();
 
+                    topHeadline.setVisibility(View.VISIBLE);
+                    swipeRefreshLayout.setRefreshing(false);
+
                 } else {
+                    topHeadline.setVisibility(View.INVISIBLE);
+                    swipeRefreshLayout.setRefreshing(false);
                     Toast.makeText(MainActivity.this, "No Result", Toast.LENGTH_SHORT).show();
                 }
             }
 
             @Override
             public void onFailure(Call<News> call, Throwable t) {
-
+                topHeadline.setVisibility(View.INVISIBLE);
+                swipeRefreshLayout.setRefreshing(false);
             }
         });
     }
@@ -100,19 +118,36 @@ public class MainActivity extends AppCompatActivity {
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                if(query.length() > 2) {
-                    LoadJson(query);
+                if (query.length() > 2) {
+                    onLoadingSwipeRefresh(query);
                 }
                 return false;
             }
 
             @Override
             public boolean onQueryTextChange(String newText) {
-                LoadJson(newText);
                 return false;
             }
         });
         searchMenuItem.getIcon().setVisible(false, false);
         return true;
+    }
+
+    @Override
+    public void onRefresh() {
+        LoadJson("");
+    }
+
+    private void onLoadingSwipeRefresh(final String keyword) {
+
+        swipeRefreshLayout.post(
+                new Runnable() {
+                    @Override
+                    public void run() {
+                        LoadJson(keyword);
+                    }
+                }
+        );
+
     }
 }
