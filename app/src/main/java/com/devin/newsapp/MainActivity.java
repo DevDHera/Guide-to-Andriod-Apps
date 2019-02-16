@@ -22,7 +22,6 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.devin.newsapp.api.ApiClient;
 import com.devin.newsapp.api.ApiInterface;
@@ -43,7 +42,6 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
     private RecyclerView.LayoutManager layoutManager;
     private List<Article> articles = new ArrayList<>();
     private Adapter adapter;
-    private String TAG = MainActivity.class.getSimpleName();
     private TextView topHeadline;
     private SwipeRefreshLayout swipeRefreshLayout;
     private RelativeLayout errorLayout;
@@ -60,7 +58,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         swipeRefreshLayout.setOnRefreshListener(this);
         swipeRefreshLayout.setColorSchemeResources(R.color.colorAccent);
 
-        topHeadline = findViewById(R.id.topheadelines);
+        topHeadline = findViewById(R.id.topheadlines);
         recyclerView = findViewById(R.id.recyclerView);
         layoutManager = new LinearLayoutManager(MainActivity.this);
         recyclerView.setLayoutManager(layoutManager);
@@ -76,7 +74,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         btnRetry = findViewById(R.id.btnRetry);
     }
 
-    public void LoadJson(final String keyword) {
+    public void retrieveDataFromAPI(final String keyword) {
         errorLayout.setVisibility(View.GONE);
         swipeRefreshLayout.setRefreshing(true);
 
@@ -106,7 +104,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                     recyclerView.setAdapter(adapter);
                     adapter.notifyDataSetChanged();
 
-                    initListener();
+                    initItemClickListener();
 
                     topHeadline.setVisibility(View.VISIBLE);
                     swipeRefreshLayout.setRefreshing(false);
@@ -124,7 +122,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                             errorCode = "500 Server Error";
                             break;
                         default:
-                            errorCode = "unknown error";
+                            errorCode = "unknown error_views";
                             break;
                     }
 
@@ -149,12 +147,12 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
         });
     }
 
-    private void initListener() {
+    private void initItemClickListener() {
         adapter.setOnItemClickListener(new Adapter.OnItemClickListener() {
             @Override
             public void onItemClick(View view, int position) {
                 ImageView imageView = view.findViewById(R.id.img);
-                Intent intent = new Intent(MainActivity.this, NewsDetailsActivity.class);
+                Intent intent = new Intent(MainActivity.this, DetailViewActivity.class);
 
                 Article article = articles.get(position);
                 intent.putExtra("url", article.getUrl());
@@ -209,7 +207,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
 
     @Override
     public void onRefresh() {
-        LoadJson("");
+        retrieveDataFromAPI("");
     }
 
     private void onLoadingSwipeRefresh(final String keyword) {
@@ -218,7 +216,7 @@ public class MainActivity extends AppCompatActivity implements SwipeRefreshLayou
                 new Runnable() {
                     @Override
                     public void run() {
-                        LoadJson(keyword);
+                        retrieveDataFromAPI(keyword);
                     }
                 }
         );

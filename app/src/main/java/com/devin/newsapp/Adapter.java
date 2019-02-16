@@ -39,7 +39,7 @@ public class Adapter extends RecyclerView.Adapter<Adapter.MyViewHolder>{
     @NonNull
     @Override
     public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View view = LayoutInflater.from(context).inflate(R.layout.item, parent, false);
+        View view = LayoutInflater.from(context).inflate(R.layout.news_item, parent, false);
         return new MyViewHolder(view, onItemClickListener);
     }
 
@@ -77,7 +77,7 @@ public class Adapter extends RecyclerView.Adapter<Adapter.MyViewHolder>{
         holder.desc.setText((CharSequence) model.getDescription());
         holder.source.setText(model.getSource().getName());
         holder.time.setText(" \u2022 " + Utils.DateToTimeFormat(model.getPublishedAt()));
-        holder.published_ad.setText(Utils.DateFormat(model.getPublishedAt()));
+        holder.published_at.setText(Utils.DateFormat(model.getPublishedAt()));
         holder.author.setText(model.getAuthor());
 
     }
@@ -97,7 +97,7 @@ public class Adapter extends RecyclerView.Adapter<Adapter.MyViewHolder>{
 
     public class MyViewHolder extends RecyclerView.ViewHolder implements  View.OnClickListener {
 
-        TextView title, desc, author, published_ad, source, time;
+        TextView title, desc, author, published_at, source, time;
         ImageView imageView;
         ProgressBar progressBar;
         OnItemClickListener onItemClickListener;
@@ -110,7 +110,7 @@ public class Adapter extends RecyclerView.Adapter<Adapter.MyViewHolder>{
             title = itemView.findViewById(R.id.title);
             desc = itemView.findViewById(R.id.desc);
             author = itemView.findViewById(R.id.author);
-            published_ad = itemView.findViewById(R.id.publishedAt);
+            published_at = itemView.findViewById(R.id.publishedAt);
             source = itemView.findViewById(R.id.source);
             time = itemView.findViewById(R.id.time);
             imageView = itemView.findViewById(R.id.img);

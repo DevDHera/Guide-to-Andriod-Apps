@@ -22,7 +22,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.resource.drawable.DrawableTransitionOptions;
 import com.bumptech.glide.request.RequestOptions;
 
-public class NewsDetailsActivity extends AppCompatActivity implements AppBarLayout.OnOffsetChangedListener {
+public class DetailViewActivity extends AppCompatActivity implements AppBarLayout.OnOffsetChangedListener {
 
     private ImageView imageView;
     private TextView appbar_title, appbar_subtitle, date, time, title;
@@ -36,7 +36,7 @@ public class NewsDetailsActivity extends AppCompatActivity implements AppBarLayo
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_news_details);
+        setContentView(R.layout.activity_detail_view);
 
         toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
