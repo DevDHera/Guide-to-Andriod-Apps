@@ -41,6 +41,14 @@ git clone https://github.com/DevDHera/Guide-to-Andriod-Apps.git
 ```
 Or you can checkout from the VCS using the **Android Studio**.
 
+After that make sure to add your own **API Key**(obtained from [newsapi.org](https://newsapi.org/)) to the following line in `.MainActivity.java`.
+
+```java
+public static final String API_KEY = "API_KEY";
+```
+
+That's it. Now enjoy your own news portal :ok_hand:
+
 
 ## Now what :question:
 
